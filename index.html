@@ -855,6 +855,7 @@
                 <li><a href="#calculator">Calculator</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="#" onclick="showLeadsPanel()" style="color: #4ecdc4;">View Leads</a></li>
             </ul>
             <a href="#apply" class="cta-button">Apply Now</a>
         </nav>
@@ -1248,6 +1249,36 @@
         </div>
     </footer>
 
+    <!-- Leads Management Panel (Hidden by default) -->
+    <div id="leadsPanel" class="leads-panel" style="display: none;">
+        <div class="leads-content">
+            <div class="leads-header">
+                <h2>📊 Lead Management Dashboard</h2>
+                <button onclick="hideLeadsPanel()" class="close-btn">×</button>
+            </div>
+            <div class="leads-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalLeads">0</div>
+                    <div class="stat-label">Total Leads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="todayLeads">0</div>
+                    <div class="stat-label">Today's Leads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="thisWeekLeads">0</div>
+                    <div class="stat-label">This Week</div>
+                </div>
+            </div>
+            <div class="leads-actions">
+                <button onclick="exportLeads()" class="action-btn">📥 Export CSV</button>
+                <button onclick="clearAllLeads()" class="action-btn danger">🗑️ Clear All</button>
+                <button onclick="refreshLeads()" class="action-btn">🔄 Refresh</button>
+            </div>
+            <div id="leadsTable"></div>
+        </div>
+    </div>
+
     <script>
         // EMI Calculator Function
         function calculateEMI() {
@@ -1307,41 +1338,92 @@
                 return;
             }
             
-            // Simulate form submission
             const submitButton = this.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
             
             submitButton.textContent = 'Sending Message...';
             submitButton.disabled = true;
             
-            // Create WhatsApp message
-            const message = `Hi Utsav! I'm interested in financial consultation.
+            // Create email content
+            const emailSubject = `New Loan Inquiry from ${data.firstName} ${data.lastName}`;
+            const emailBody = `New Contact Form Submission - NexLoans Website
 
+CONTACT DETAILS:
 Name: ${data.firstName} ${data.lastName}
 Email: ${data.email}
 Phone: ${data.phone}
+
+LOAN REQUIREMENTS:
 Loan Type: ${data.loanType || 'Not specified'}
 Loan Amount: ${data.loanAmount || 'Not specified'}
 Timeframe: ${data.timeframe || 'Not specified'}
-Additional Info: ${data.message || 'None'}
 
-Please contact me for a consultation. Thank you!`;
+ADDITIONAL INFORMATION:
+${data.message || 'None provided'}
+
+SUBMISSION TIME: ${new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}
+
+---
+This inquiry was submitted through the NexLoans website contact form.`;
             
-            // Simulate processing time
+            // Create WhatsApp message
+            const whatsappMessage = `🌟 *New Lead - NexLoans Website* 🌟
+
+👤 *Name:* ${data.firstName} ${data.lastName}
+📧 *Email:* ${data.email}
+📱 *Phone:* ${data.phone}
+
+💰 *Loan Details:*
+• Type: ${data.loanType || 'Not specified'}
+• Amount: ${data.loanAmount || 'Not specified'}  
+• Timeline: ${data.timeframe || 'Not specified'}
+
+📝 *Message:* ${data.message || 'None'}
+
+⏰ *Submitted:* ${new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}`;
+            
+            // Method 1: Send Email (opens email client)
+            const mailtoLink = `mailto:utsav.nexloans@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Method 2: WhatsApp (your personal number)
+            const whatsappUrl = `https://wa.me/918401078939?text=${encodeURIComponent(whatsappMessage)}`;
+            
+            // Method 3: Store in localStorage for your reference
+            const leads = JSON.parse(localStorage.getItem('nexloans_leads') || '[]');
+            leads.push({
+                ...data,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            });
+            localStorage.setItem('nexloans_leads', JSON.stringify(leads));
+            
+            // Process submission
             setTimeout(() => {
                 // Hide form and show success message
                 document.getElementById('contactForm').style.display = 'none';
                 document.getElementById('form-success').style.display = 'flex';
                 
-                // Optional: Open WhatsApp with pre-filled message
-                const whatsappUrl = `https://wa.me/918401078939?text=${encodeURIComponent(message)}`;
-                
-                // Ask user if they want to continue to WhatsApp
+                // Open both email and WhatsApp
                 setTimeout(() => {
-                    if (confirm('Would you like to continue the conversation on WhatsApp for faster response?')) {
-                        window.open(whatsappUrl, '_blank');
-                    }
+                    // Open email client
+                    window.open(mailtoLink);
+                    
+                    // Ask for WhatsApp
+                    setTimeout(() => {
+                        if (confirm('Lead details have been emailed to you. Would you also like to send this to your WhatsApp for immediate notification?')) {
+                            window.open(whatsappUrl, '_blank');
+                        }
+                    }, 1000);
                 }, 2000);
+                
+                // Reset form after 30 seconds
+                setTimeout(() => {
+                    this.style.display = 'block';
+                    document.getElementById('form-success').style.display = 'none';
+                    this.reset();
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }, 30000);
                 
             }, 2000);
         });
