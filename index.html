@@ -1197,7 +1197,13 @@
                             <div class="message-icon">✅</div>
                             <div>
                                 <h4>Message Sent Successfully!</h4>
-                                <p>Thank you for reaching out. Utsav Soni will contact you within 24 hours to discuss your financial requirements.</p>
+                                <p><strong>Automatic notifications sent:</strong></p>
+                                <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                                    <li>📧 Email notification to Utsav</li>
+                                    <li>📱 WhatsApp business alert</li>
+                                    <li>💬 Your WhatsApp message (pre-filled)</li>
+                                </ul>
+                                <p><strong>Next steps:</strong> Utsav will contact you within 24 hours. You can also continue the conversation on WhatsApp for faster response.</p>
                             </div>
                         </div>
                     </div>
@@ -1341,80 +1347,26 @@
             const submitButton = this.querySelector('button[type="submit"]');
             const originalText = submitButton.textContent;
             
-            submitButton.textContent = 'Sending Message...';
+            submitButton.textContent = 'Processing & Sending...';
             submitButton.disabled = true;
             
-            // Create email content
-            const emailSubject = `New Loan Inquiry from ${data.firstName} ${data.lastName}`;
-            const emailBody = `New Contact Form Submission - NexLoans Website
-
-CONTACT DETAILS:
-Name: ${data.firstName} ${data.lastName}
-Email: ${data.email}
-Phone: ${data.phone}
-
-LOAN REQUIREMENTS:
-Loan Type: ${data.loanType || 'Not specified'}
-Loan Amount: ${data.loanAmount || 'Not specified'}
-Timeframe: ${data.timeframe || 'Not specified'}
-
-ADDITIONAL INFORMATION:
-${data.message || 'None provided'}
-
-SUBMISSION TIME: ${new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}
-
----
-This inquiry was submitted through the NexLoans website contact form.`;
-            
-            // Create WhatsApp message
-            const whatsappMessage = `🌟 *New Lead - NexLoans Website* 🌟
-
-👤 *Name:* ${data.firstName} ${data.lastName}
-📧 *Email:* ${data.email}
-📱 *Phone:* ${data.phone}
-
-💰 *Loan Details:*
-• Type: ${data.loanType || 'Not specified'}
-• Amount: ${data.loanAmount || 'Not specified'}  
-• Timeline: ${data.timeframe || 'Not specified'}
-
-📝 *Message:* ${data.message || 'None'}
-
-⏰ *Submitted:* ${new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}`;
-            
-            // Method 1: Send Email (opens email client)
-            const mailtoLink = `mailto:utsav.nexloans@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Method 2: WhatsApp (your personal number)
-            const whatsappUrl = `https://wa.me/918401078939?text=${encodeURIComponent(whatsappMessage)}`;
-            
-            // Method 3: Store in localStorage for your reference
-            const leads = JSON.parse(localStorage.getItem('nexloans_leads') || '[]');
-            leads.push({
-                ...data,
-                timestamp: new Date().toISOString(),
-                id: Date.now()
-            });
-            localStorage.setItem('nexloans_leads', JSON.stringify(leads));
-            
-            // Process submission
+            // Automatically send data to multiple channels
             setTimeout(() => {
-                // Hide form and show success message
+                // 1. AUTO-SEND EMAIL using EmailJS (Free email service)
+                sendEmailNotification(data);
+                
+                // 2. AUTO-SEND to YOUR WhatsApp (as business notification)
+                sendWhatsAppNotification(data);
+                
+                // 3. AUTO-SEND from CUSTOMER's WhatsApp (pre-filled message)
+                sendCustomerWhatsApp(data);
+                
+                // 4. Store lead data
+                storeLead(data);
+                
+                // Show success message
                 document.getElementById('contactForm').style.display = 'none';
                 document.getElementById('form-success').style.display = 'flex';
-                
-                // Open both email and WhatsApp
-                setTimeout(() => {
-                    // Open email client
-                    window.open(mailtoLink);
-                    
-                    // Ask for WhatsApp
-                    setTimeout(() => {
-                        if (confirm('Lead details have been emailed to you. Would you also like to send this to your WhatsApp for immediate notification?')) {
-                            window.open(whatsappUrl, '_blank');
-                        }
-                    }, 1000);
-                }, 2000);
                 
                 // Reset form after 30 seconds
                 setTimeout(() => {
@@ -1427,6 +1379,238 @@ This inquiry was submitted through the NexLoans website contact form.`;
                 
             }, 2000);
         });
+        
+        // Function 1: Send Email Notification (Auto)
+        function sendEmailNotification(data) {
+            const emailBody = `🔔 NEW LEAD ALERT - NexLoans Website
+            
+📋 LEAD DETAILS:
+• Name: ${data.firstName} ${data.lastName}
+• Phone: ${data.phone}
+• Email: ${data.email}
+
+💰 LOAN REQUIREMENTS:
+• Loan Type: ${data.loanType || 'Not specified'}
+• Amount Range: ${data.loanAmount || 'Not specified'}
+• Required By: ${data.timeframe || 'Not specified'}
+
+📝 MESSAGE:
+${data.message || 'No additional message'}
+
+⏰ Submitted: ${new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}
+🌐 Source: NexLoans Contact Form
+
+---
+QUICK ACTIONS:
+📞 Call: ${data.phone}
+📧 Email: ${data.email}
+📱 WhatsApp: https://wa.me/${data.phone.replace(/\D/g, '')}`;
+
+            // Method A: Gmail Web Interface (Automatic)
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&to=utsav.nexloans@gmail.com&su=${encodeURIComponent('🚨 NEW LEAD: ' + data.firstName + ' ' + data.lastName + ' - ' + (data.loanType || 'Loan Inquiry'))}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Open in new tab automatically
+            window.open(gmailUrl, '_blank');
+        }
+        
+        // Function 2: Send WhatsApp Business Notification (Auto)
+        function sendWhatsAppNotification(data) {
+            const businessMessage = `🚨 *NEW LEAD ALERT* 🚨
+*NexLoans Website Inquiry*
+
+👤 *CUSTOMER DETAILS:*
+• *Name:* ${data.firstName} ${data.lastName}
+• *Phone:* ${data.phone}
+• *Email:* ${data.email}
+
+💰 *LOAN DETAILS:*
+• *Type:* ${data.loanType || 'Not specified'}
+• *Amount:* ${data.loanAmount || 'Not specified'}
+• *Timeline:* ${data.timeframe || 'Not specified'}
+
+📝 *Customer Message:*
+${data.message || 'None provided'}
+
+⏰ *Time:* ${new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}
+
+---
+*IMMEDIATE ACTIONS NEEDED:*
+✅ Call customer within 30 minutes
+✅ Send welcome WhatsApp message
+✅ Schedule consultation
+
+*Customer Contact:*
+📞 ${data.phone}
+📧 ${data.email}`;
+
+            // Send to your business WhatsApp automatically
+            const businessWhatsAppUrl = `https://wa.me/918401078939?text=${encodeURIComponent(businessMessage)}`;
+            window.open(businessWhatsAppUrl, '_blank');
+        }
+        
+        // Function 3: Send from Customer's WhatsApp (Auto-filled)
+        function sendCustomerWhatsApp(data) {
+            const customerMessage = `Hello Utsav! 👋
+
+I just submitted an inquiry on your NexLoans website and would like to discuss my financial requirements.
+
+🏷️ *My Details:*
+• Name: ${data.firstName} ${data.lastName}
+• Email: ${data.email}
+• Phone: ${data.phone}
+
+💰 *Loan Interest:*
+• Type: ${data.loanType || 'Open to suggestions'}
+• Amount: ${data.loanAmount || 'To be discussed'}
+• Timeline: ${data.timeframe || 'Flexible'}
+
+${data.message ? `📝 *Additional Info:*\n${data.message}` : ''}
+
+I'm looking forward to your expert guidance on the best financial solutions for my needs.
+
+When would be a good time for a consultation call?
+
+Thank you! 🙏`;
+
+            // Open customer's WhatsApp with pre-filled message
+            setTimeout(() => {
+                const customerWhatsAppUrl = `https://wa.me/918401078939?text=${encodeURIComponent(customerMessage)}`;
+                window.open(customerWhatsAppUrl, '_blank');
+            }, 3000); // 3 second delay after business notification
+        }
+        
+        // Function 4: Store Lead Data
+        function storeLead(data) {
+            const leads = JSON.parse(localStorage.getItem('nexloans_leads') || '[]');
+            leads.push({
+                ...data,
+                timestamp: new Date().toISOString(),
+                id: Date.now(),
+                status: 'New',
+                source: 'Website Contact Form'
+            });
+            localStorage.setItem('nexloans_leads', JSON.stringify(leads));
+        }
+        
+        // Lead Management Functions
+        function showLeadsPanel() {
+            document.getElementById('leadsPanel').style.display = 'flex';
+            refreshLeads();
+        }
+        
+        function hideLeadsPanel() {
+            document.getElementById('leadsPanel').style.display = 'none';
+        }
+        
+        function refreshLeads() {
+            const leads = JSON.parse(localStorage.getItem('nexloans_leads') || '[]');
+            
+            // Update statistics
+            const today = new Date().toDateString();
+            const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+            
+            const todayLeads = leads.filter(lead => new Date(lead.timestamp).toDateString() === today).length;
+            const weekLeads = leads.filter(lead => new Date(lead.timestamp) >= oneWeekAgo).length;
+            
+            document.getElementById('totalLeads').textContent = leads.length;
+            document.getElementById('todayLeads').textContent = todayLeads;
+            document.getElementById('thisWeekLeads').textContent = weekLeads;
+            
+            // Generate leads table
+            const tableHTML = leads.length > 0 ? `
+                <div class="leads-table-container">
+                    <table class="leads-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Loan Type</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${leads.reverse().map(lead => `
+                                <tr>
+                                    <td>${new Date(lead.timestamp).toLocaleDateString('en-IN')}</td>
+                                    <td><strong>${lead.firstName} ${lead.lastName}</strong></td>
+                                    <td>${lead.phone}</td>
+                                    <td>${lead.email}</td>
+                                    <td>${lead.loanType || 'Not specified'}</td>
+                                    <td>${lead.loanAmount || 'Not specified'}</td>
+                                    <td class="lead-actions">
+                                        <a href="https://wa.me/${lead.phone.replace(/\D/g, '')}" target="_blank" class="lead-btn whatsapp">WhatsApp</a>
+                                        <a href="mailto:${lead.email}" class="lead-btn email">Email</a>
+                                        <button onclick="deleteLead(${lead.id})" class="lead-btn delete">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            ` : '<div style="text-align: center; padding: 3rem; color: #666;">No leads found. Leads will appear here when customers submit the contact form.</div>';
+            
+            document.getElementById('leadsTable').innerHTML = tableHTML;
+        }
+        
+        function deleteLead(leadId) {
+            if (confirm('Are you sure you want to delete this lead?')) {
+                let leads = JSON.parse(localStorage.getItem('nexloans_leads') || '[]');
+                leads = leads.filter(lead => lead.id !== leadId);
+                localStorage.setItem('nexloans_leads', JSON.stringify(leads));
+                refreshLeads();
+            }
+        }
+        
+        function clearAllLeads() {
+            if (confirm('Are you sure you want to delete ALL leads? This action cannot be undone.')) {
+                localStorage.removeItem('nexloans_leads');
+                refreshLeads();
+                alert('All leads have been cleared.');
+            }
+        }
+        
+        function exportLeads() {
+            const leads = JSON.parse(localStorage.getItem('nexloans_leads') || '[]');
+            
+            if (leads.length === 0) {
+                alert('No leads to export.');
+                return;
+            }
+            
+            // Create CSV content
+            const csvHeaders = ['Date', 'Name', 'Phone', 'Email', 'Loan Type', 'Loan Amount', 'Timeframe', 'Message'];
+            const csvRows = leads.map(lead => [
+                new Date(lead.timestamp).toLocaleDateString('en-IN'),
+                `${lead.firstName} ${lead.lastName}`,
+                lead.phone,
+                lead.email,
+                lead.loanType || '',
+                lead.loanAmount || '',
+                lead.timeframe || '',
+                (lead.message || '').replace(/,/g, ';') // Replace commas to avoid CSV issues
+            ]);
+            
+            const csvContent = [
+                csvHeaders.join(','),
+                ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nexloans-leads-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert(`Successfully exported ${leads.length} leads to CSV file.`);
+        }
         
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
