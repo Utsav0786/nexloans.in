@@ -453,6 +453,244 @@
             color: #667eea;
         }
 
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .contact-info h3::after {
+            content: '';
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .contact-benefits {
+            margin-bottom: 3rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-item h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .benefit-item p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .direct-contact {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .method-icon {
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-method:hover .method-icon {
+            background: white;
+        }
+
+        .contact-method strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-method span {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .contact-form-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .contact-form h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .contact-form input:focus,
+        .contact-form select:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-label {
+            display: flex !important;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto !important;
+            margin: 0;
+        }
+
+        .form-message {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .form-message.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .message-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .form-message h4 {
+            margin-bottom: 0.5rem;
+            color: inherit;
+        }
+
+        .form-message p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
         /* Footer */
         footer {
             background: #2c3e50;
@@ -545,6 +783,33 @@
             .hero-buttons .cta-button {
                 display: block;
                 margin: 0.5rem 0;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact-form-container {
+                padding: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefit-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .contact-methods {
+                gap: 0.5rem;
+            }
+            
+            .contact-method {
+                padding: 1rem 0.5rem;
             }
         }
 
@@ -783,6 +1048,163 @@
         </div>
     </section>
 
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get Connected with Utsav Soni</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 3rem;">
+                Ready to start your financial journey? Connect directly with our founder for personalized consultation and expert advice.
+            </p>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Why Connect Directly?</h3>
+                    <div class="contact-benefits">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">👨‍💼</div>
+                            <div>
+                                <h4>Personal Attention</h4>
+                                <p>Direct consultation with 9+ years experienced financial planner</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📊</div>
+                            <div>
+                                <h4>Customized Solutions</h4>
+                                <p>Tailored financial strategies based on your unique requirements</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⚡</div>
+                            <div>
+                                <h4>Quick Response</h4>
+                                <p>Get response within 24 hours for all your queries</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🎯</div>
+                            <div>
+                                <h4>Goal-Oriented Planning</h4>
+                                <p>Strategic approach to achieve your financial objectives</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="direct-contact">
+                        <h3>Direct Contact</h3>
+                        <div class="contact-methods">
+                            <a href="tel:+918401078939" class="contact-method">
+                                <div class="method-icon">📞</div>
+                                <div>
+                                    <strong>Call Now</strong>
+                                    <span>+91 84010 78939</span>
+                                </div>
+                            </a>
+                            <a href="https://wa.me/918401078939" class="contact-method" target="_blank">
+                                <div class="method-icon">📱</div>
+                                <div>
+                                    <strong>WhatsApp</strong>
+                                    <span>Quick chat support</span>
+                                </div>
+                            </a>
+                            <a href="mailto:utsav@nexloans.com" class="contact-method">
+                                <div class="method-icon">📧</div>
+                                <div>
+                                    <strong>Email</strong>
+                                    <span>utsav@nexloans.com</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <div class="contact-form">
+                        <h3>Schedule a Free Consultation</h3>
+                        <form id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required placeholder="+91">
+                            </div>
+                            <div class="form-group">
+                                <label for="loanType">Loan Type of Interest</label>
+                                <select id="loanType" name="loanType">
+                                    <option value="">Select Loan Type</option>
+                                    <option value="home">Home Loan</option>
+                                    <option value="auto">Auto Loan</option>
+                                    <option value="personal">Personal Loan</option>
+                                    <option value="business">Business Loan</option>
+                                    <option value="education">Education Loan</option>
+                                    <option value="investment">Investment Advisory</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="loanAmount">Approximate Loan Amount (₹)</label>
+                                    <select id="loanAmount" name="loanAmount">
+                                        <option value="">Select Range</option>
+                                        <option value="1-5">₹1-5 Lakhs</option>
+                                        <option value="5-10">₹5-10 Lakhs</option>
+                                        <option value="10-25">₹10-25 Lakhs</option>
+                                        <option value="25-50">₹25-50 Lakhs</option>
+                                        <option value="50-100">₹50 Lakhs - 1 Crore</option>
+                                        <option value="100+">₹1+ Crore</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="timeframe">When do you need the loan?</label>
+                                    <select id="timeframe" name="timeframe">
+                                        <option value="">Select Timeframe</option>
+                                        <option value="immediate">Immediately</option>
+                                        <option value="1-month">Within 1 Month</option>
+                                        <option value="3-months">Within 3 Months</option>
+                                        <option value="6-months">Within 6 Months</option>
+                                        <option value="planning">Just Planning</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Additional Information</label>
+                                <textarea id="message" name="message" rows="4" placeholder="Tell us about your requirements, financial goals, or any specific questions..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="consent" name="consent" required>
+                                    <span class="checkmark"></span>
+                                    I agree to be contacted by NexLoans and understand that my information will be used to provide personalized financial consultation.
+                                </label>
+                            </div>
+                            <button type="submit" class="cta-button" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                                Send Message & Schedule Consultation
+                            </button>
+                        </form>
+                        
+                        <div id="form-success" class="form-message success" style="display: none;">
+                            <div class="message-icon">✅</div>
+                            <div>
+                                <h4>Message Sent Successfully!</h4>
+                                <p>Thank you for reaching out. Utsav Soni will contact you within 24 hours to discuss your financial requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -858,6 +1280,71 @@
         document.getElementById('interestRate').addEventListener('input', calculateEMI);
         document.getElementById('loanTenure').addEventListener('input', calculateEMI);
         document.getElementById('tenureType').addEventListener('change', calculateEMI);
+        
+        // Contact Form Handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Validate required fields
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'consent'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (!data[field] || (field === 'consent' && !element.checked)) {
+                    element.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    element.style.borderColor = '#e9ecef';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields and accept the consent.');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            submitButton.textContent = 'Sending Message...';
+            submitButton.disabled = true;
+            
+            // Create WhatsApp message
+            const message = `Hi Utsav! I'm interested in financial consultation.
+
+Name: ${data.firstName} ${data.lastName}
+Email: ${data.email}
+Phone: ${data.phone}
+Loan Type: ${data.loanType || 'Not specified'}
+Loan Amount: ${data.loanAmount || 'Not specified'}
+Timeframe: ${data.timeframe || 'Not specified'}
+Additional Info: ${data.message || 'None'}
+
+Please contact me for a consultation. Thank you!`;
+            
+            // Simulate processing time
+            setTimeout(() => {
+                // Hide form and show success message
+                document.getElementById('contactForm').style.display = 'none';
+                document.getElementById('form-success').style.display = 'flex';
+                
+                // Optional: Open WhatsApp with pre-filled message
+                const whatsappUrl = `https://wa.me/918401078939?text=${encodeURIComponent(message)}`;
+                
+                // Ask user if they want to continue to WhatsApp
+                setTimeout(() => {
+                    if (confirm('Would you like to continue the conversation on WhatsApp for faster response?')) {
+                        window.open(whatsappUrl, '_blank');
+                    }
+                }, 2000);
+                
+            }, 2000);
+        });
         
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
