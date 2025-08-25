@@ -1451,27 +1451,27 @@ ${data.message || 'None provided'}
         
         // Function 3: Send from Customer's WhatsApp (Auto-filled)
         function sendCustomerWhatsApp(data) {
-            const customerMessage = `Hello Utsav! 👋
+            const customerMessage = `Hello Utsav! 
 
 I just submitted an inquiry on your NexLoans website and would like to discuss my financial requirements.
 
-🏷️ *My Details:*
+ *My Details:*
 • Name: ${data.firstName} ${data.lastName}
 • Email: ${data.email}
 • Phone: ${data.phone}
 
-💰 *Loan Interest:*
+ *Loan Interest:*
 • Type: ${data.loanType || 'Open to suggestions'}
 • Amount: ${data.loanAmount || 'To be discussed'}
 • Timeline: ${data.timeframe || 'Flexible'}
 
-${data.message ? `📝 *Additional Info:*\n${data.message}` : ''}
+${data.message ? ` *Additional Info:*\n${data.message}` : ''}
 
 I'm looking forward to your expert guidance on the best financial solutions for my needs.
 
 When would be a good time for a consultation call?
 
-Thank you! 🙏`;
+Thank you! `;
 
             // Open customer's WhatsApp with pre-filled message
             setTimeout(() => {
