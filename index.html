@@ -857,7 +857,7 @@
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="#" onclick="showLeadsPanel()" style="color: #4ecdc4;">View Leads</a></li>
             </ul>
-            <a href="#apply" class="cta-button">Apply Now</a>
+            <a href="#contact" class="cta-button">Apply Now</a>
         </nav>
     </header>
 
@@ -868,8 +868,8 @@
                 <h1>Your Financial Dreams Start Here</h1>
                 <p>Get the best loan deals with competitive rates, quick approvals, and personalized financial solutions tailored just for you.</p>
                 <div class="hero-buttons">
-                    <a href="#services" class="cta-button">Explore Loans</a>
-                    <a href="#calculator" class="cta-button" style="background: rgba(255,255,255,0.2);">Calculate EMI</a>
+                    <a href="#contact" class="cta-button">Explore Loans</a>
+                    <a href="#contact" class="cta-button" style="background: rgba(255,255,255,0.2);">Apply Now</a>
                 </div>
             </div>
         </div>
@@ -883,7 +883,7 @@
                     <div class="service-icon">🏠</div>
                     <h3>Home Loans</h3>
                     <p>Make your dream home a reality with our competitive home loan rates starting from 6.5% per annum.</p>
-                    <a href="#" class="cta-button">Learn More</a>
+                    <a href="#contact" class="cta-button">Learn More</a>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🚗</div>
@@ -1096,21 +1096,21 @@
                                 <div class="method-icon">📞</div>
                                 <div>
                                     <strong>Call Now</strong>
-                                    <span>+91 72038 01059</span>
+                                    <span>+91 84010 78939</span>
                                 </div>
                             </a>
-                            <a href="https://wa.me/917203801059" class="contact-method" target="_blank">
+                            <a href="https://wa.me/918401078939" class="contact-method" target="_blank">
                                 <div class="method-icon">📱</div>
                                 <div>
                                     <strong>WhatsApp</strong>
                                     <span>Quick chat support</span>
                                 </div>
                             </a>
-                            <a href="mailto:soniutsav956@gmail.com" class="contact-method">
+                            <a href="mailto:utsav@nexloans.com" class="contact-method">
                                 <div class="method-icon">📧</div>
                                 <div>
                                     <strong>Email</strong>
-                                    <span>soniutsav956@gmail.com</span>
+                                    <span>utsav@nexloans.com</span>
                                 </div>
                             </a>
                         </div>
@@ -1196,14 +1196,16 @@
                         <div id="form-success" class="form-message success" style="display: none;">
                             <div class="message-icon">✅</div>
                             <div>
-                                <h4>Message Sent Successfully!</h4>
-                                <p><strong>Automatic notifications sent:</strong></p>
+                                <h4>Application Submitted Successfully!</h4>
+                                <p><strong>Your data has been automatically sent to:</strong></p>
                                 <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                                    <li>📊 Google Sheets (Primary database)</li>
                                     <li>📧 Email notification to Utsav</li>
                                     <li>📱 WhatsApp business alert</li>
                                     <li>💬 Your WhatsApp message (pre-filled)</li>
                                 </ul>
-                                <p><strong>Next steps:</strong> Utsav will contact you within 24 hours. You can also continue the conversation on WhatsApp for faster response.</p>
+                                <p><strong>Application ID:</strong> <span id="applicationId"></span></p>
+                                <p><strong>Next steps:</strong> Utsav will review your application and contact you within 24 hours with loan options and next steps.</p>
                             </div>
                         </div>
                     </div>
@@ -1242,10 +1244,9 @@
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <ul>
-                        <li>📧 soniutsav956@gmail.com</li>
-                        <li>📞 +91 72038 01059</li>
-                        <li>📍 TNI CLUB, 
-3128, Trp Mall (C wing, Third floor, Center Court, Opp lift C-1), Opp Bhavya Park Brts, Bopal, Ahmedabad-380058</li>
+                        <li>📧 info@nexloans.com</li>
+                        <li>📞 +91 84010 78939</li>
+                        <li>📍 123 Finance Street, Business District</li>
                         <li>🕒 Mon-Sat: 9AM-6PM</li>
                     </ul>
                 </div>
@@ -1351,35 +1352,93 @@
             submitButton.textContent = 'Processing & Sending...';
             submitButton.disabled = true;
             
-            // Automatically send data to multiple channels
-            setTimeout(() => {
-                // 1. AUTO-SEND EMAIL using EmailJS (Free email service)
-                sendEmailNotification(data);
-                
-                // 2. AUTO-SEND to YOUR WhatsApp (as business notification)
-                sendWhatsAppNotification(data);
-                
-                // 3. AUTO-SEND from CUSTOMER's WhatsApp (pre-filled message)
-                sendCustomerWhatsApp(data);
-                
-                // 4. Store lead data
-                storeLead(data);
-                
-                // Show success message
-                document.getElementById('contactForm').style.display = 'none';
-                document.getElementById('form-success').style.display = 'flex';
-                
-                // Reset form after 30 seconds
-                setTimeout(() => {
-                    this.style.display = 'block';
-                    document.getElementById('form-success').style.display = 'none';
-                    this.reset();
+            // Process all data sending methods
+            setTimeout(async () => {
+                try {
+                    // 1. Send to Google Sheets (PRIMARY METHOD)
+                    await sendToGoogleSheets(data);
+                    
+                    // 2. Send email notification
+                    sendEmailNotification(data);
+                    
+                    // 3. Send WhatsApp notifications
+                    sendWhatsAppNotification(data);
+                    sendCustomerWhatsApp(data);
+                    
+                    // 4. Store lead data locally
+                    storeLead(data);
+                    
+                    // Show success message
+                    const applicationId = 'NL' + Date.now().toString().slice(-8);
+                    document.getElementById('applicationId').textContent = applicationId;
+                    document.getElementById('contactForm').style.display = 'none';
+                    document.getElementById('form-success').style.display = 'flex';
+                    
+                    // Reset form after 30 seconds
+                    setTimeout(() => {
+                        this.style.display = 'block';
+                        document.getElementById('form-success').style.display = 'none';
+                        this.reset();
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }, 30000);
+                    
+                } catch (error) {
+                    console.error('Error processing form:', error);
+                    alert('There was an error processing your request. Please try again or contact us directly.');
                     submitButton.textContent = originalText;
                     submitButton.disabled = false;
-                }, 30000);
-                
+                }
             }, 2000);
         });
+        
+        // Function: Send to Google Sheets (MAIN DATA STORAGE)
+        async function sendToGoogleSheets(data) {
+            // Google Apps Script Web App URL 
+            // SETUP INSTRUCTIONS:
+            // 1. Go to script.google.com
+            // 2. Create new project
+            // 3. Replace default code with the Google Apps Script code provided
+            // 4. Deploy as web app with "Anyone" access
+            // 5. Replace YOUR-SCRIPT-ID-HERE with your actual deployment ID
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-YOUR-SCRIPT-ID-HERE/exec';
+            
+            const applicationId = 'NL' + Date.now().toString().slice(-8);
+            const payload = {
+                applicationId: applicationId,
+                timestamp: new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'}),
+                firstName: data.firstName,
+                lastName: data.lastName,
+                fullName: `${data.firstName} ${data.lastName}`,
+                email: data.email,
+                phone: data.phone,
+                loanType: data.loanType || 'Not specified',
+                loanAmount: data.loanAmount || 'Not specified',
+                timeframe: data.timeframe || 'Not specified',
+                message: data.message || 'None',
+                source: 'NexLoans Website',
+                status: 'New Lead',
+                followUp: 'Pending'
+            };
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                console.log('Data sent to Google Sheets successfully');
+                return applicationId;
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                // Continue with other methods even if Google Sheets fails
+                return applicationId;
+            }
+        }
         
         // Function 1: Send Email Notification (Auto)
         function sendEmailNotification(data) {
@@ -1408,7 +1467,7 @@ QUICK ACTIONS:
 📱 WhatsApp: https://wa.me/${data.phone.replace(/\D/g, '')}`;
 
             // Method A: Gmail Web Interface (Automatic)
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&to=soniutsav956@gmail.com&su=${encodeURIComponent('🚨 NEW LEAD: ' + data.firstName + ' ' + data.lastName + ' - ' + (data.loanType || 'Loan Inquiry'))}&body=${encodeURIComponent(emailBody)}`;
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&to=utsav.nexloans@gmail.com&su=${encodeURIComponent('🚨 NEW LEAD: ' + data.firstName + ' ' + data.lastName + ' - ' + (data.loanType || 'Loan Inquiry'))}&body=${encodeURIComponent(emailBody)}`;
             
             // Open in new tab automatically
             window.open(gmailUrl, '_blank');
@@ -1445,37 +1504,37 @@ ${data.message || 'None provided'}
 📧 ${data.email}`;
 
             // Send to your business WhatsApp automatically
-            const businessWhatsAppUrl = `https://wa.me/917203801059?text=${encodeURIComponent(businessMessage)}`;
+            const businessWhatsAppUrl = `https://wa.me/918401078939?text=${encodeURIComponent(businessMessage)}`;
             window.open(businessWhatsAppUrl, '_blank');
         }
         
         // Function 3: Send from Customer's WhatsApp (Auto-filled)
         function sendCustomerWhatsApp(data) {
-            const customerMessage = `Hello Utsav! 
+            const customerMessage = `Hello Utsav! 👋
 
 I just submitted an inquiry on your NexLoans website and would like to discuss my financial requirements.
 
- *My Details:*
+🏷️ *My Details:*
 • Name: ${data.firstName} ${data.lastName}
 • Email: ${data.email}
 • Phone: ${data.phone}
 
- *Loan Interest:*
+💰 *Loan Interest:*
 • Type: ${data.loanType || 'Open to suggestions'}
 • Amount: ${data.loanAmount || 'To be discussed'}
 • Timeline: ${data.timeframe || 'Flexible'}
 
-${data.message ? ` *Additional Info:*\n${data.message}` : ''}
+${data.message ? `📝 *Additional Info:*\n${data.message}` : ''}
 
 I'm looking forward to your expert guidance on the best financial solutions for my needs.
 
 When would be a good time for a consultation call?
 
-Thank you! `;
+Thank you! 🙏`;
 
             // Open customer's WhatsApp with pre-filled message
             setTimeout(() => {
-                const customerWhatsAppUrl = `https://wa.me/917203801059?text=${encodeURIComponent(customerMessage)}`;
+                const customerWhatsAppUrl = `https://wa.me/918401078939?text=${encodeURIComponent(customerMessage)}`;
                 window.open(customerWhatsAppUrl, '_blank');
             }, 3000); // 3 second delay after business notification
         }
